@@ -1,0 +1,15 @@
+MANIFEST.in
+README
+README.rst
+setup.cfg
+setup.py
+src/sphinx_recent_pages.egg-info/PKG-INFO
+src/sphinx_recent_pages.egg-info/SOURCES.txt
+src/sphinx_recent_pages.egg-info/dependency_links.txt
+src/sphinx_recent_pages.egg-info/top_level.txt
+src/test/__init__.py
+src/test/__init__.pyc
+src/test/sphinx/TestRecentPages.py
+src/test/sphinx/TestRecentPages.pyc
+src/test/sphinx/__init__.py
+src/test/sphinx/__init__.pyc
