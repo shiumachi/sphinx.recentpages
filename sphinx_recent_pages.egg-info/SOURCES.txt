@@ -1,0 +1,8 @@
+MANIFEST.in
+README
+README.rst
+setup.py
+sphinx_recent_pages.egg-info/PKG-INFO
+sphinx_recent_pages.egg-info/SOURCES.txt
+sphinx_recent_pages.egg-info/dependency_links.txt
+sphinx_recent_pages.egg-info/top_level.txt
