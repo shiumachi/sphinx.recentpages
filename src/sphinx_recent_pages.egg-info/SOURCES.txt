@@ -13,6 +13,14 @@ src/sphinx_recent_pages.egg-info/dependency_links.txt
 src/sphinx_recent_pages.egg-info/top_level.txt
 src/test/__init__.py
 src/test/__init__.pyc
+src/test/data/test001
+src/test/data/test002
+src/test/data/test003
+src/test/data/test006
+src/test/data/dir01/test004
+src/test/data/dir02/dir03/test005
+src/test/sphinx/Constants.py
+src/test/sphinx/Constants.pyc
 src/test/sphinx/TestRecentPages.py
 src/test/sphinx/TestRecentPages.pyc
 src/test/sphinx/__init__.py
