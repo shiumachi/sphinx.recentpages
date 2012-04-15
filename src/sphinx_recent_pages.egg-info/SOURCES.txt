@@ -3,6 +3,10 @@ README
 README.rst
 setup.cfg
 setup.py
+src/sphinx/__init__.py
+src/sphinx/__init__.pyc
+src/sphinx/recentpages.py
+src/sphinx/recentpages.pyc
 src/sphinx_recent_pages.egg-info/PKG-INFO
 src/sphinx_recent_pages.egg-info/SOURCES.txt
 src/sphinx_recent_pages.egg-info/dependency_links.txt

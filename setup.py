@@ -2,11 +2,6 @@
 
 from setuptools import setup, find_packages
 
-import sys
-
-sys.path.append('src/python')
-sys.path.append('src/test')
-
 setup(name='sphinx_recent_pages',
       version='0.1',
       author='Sho Shimauchi',
