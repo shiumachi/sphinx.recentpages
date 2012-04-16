@@ -20,3 +20,6 @@ class File(object):
 
     def getMtime(self):
         return self.statResult.st_mtime
+
+    def getRelativePath(self, start_dir):
+        return os.path.relpath(self.absolutePath, start_dir)

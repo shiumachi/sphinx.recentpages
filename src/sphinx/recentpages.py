@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 """
     sphinx.recentpages
@@ -8,10 +9,40 @@
 """
 
 from sphinx.util.file import File
+import sys
 import os
-
+import datetime
+import stat
 
 class RecentPages(object):
+
+    @classmethod
+    def generate(self, target_dir):
+        rst = ""
+        rst += self._getHeader()
+        fileList = self.getFileListOrderedByMtime(target_dir)
+        rst += self._getRstFileLists(fileList, target_dir)
+        return rst
+
+    @classmethod
+    def _getHeader(self):
+        header = """.. _recentPages:
+============
+Recent Pages
+============
+
+"""
+        return header
+
+    @classmethod
+    def _getRstFileLists(self, fileList, target_dir):
+        res = ""
+        for file in fileList:
+            s = "* :doc:`%s`: %s\n" % (file.getRelativePath(target_dir), datetime.datetime.fromtimestamp(file.getMtime()))
+            res += s
+
+        return res
+            
 
     @classmethod
     def getFileListOrderedByMtime(self, target_dir):
@@ -43,18 +74,20 @@ class RecentPages(object):
                 res.append(rel_path + "/" + f)
             for d in dir_list:
                 res += self._walk(d)
-        return res
+        return res        
             
-
-        
-        
-    
     @classmethod
-    def main(self):
+    def main(self,argv=None):        
         """main method
         """
-        print "test"
+        if argv is None:
+            print "ERROR: directory must be specified"
+        dir = argv[1]
+        mode = os.stat(dir).st_mode
+        if not stat.S_ISDIR(mode):
+            print "ERROR: the argument is not a directory"            
+        print self.generate(dir)
 
 
 if __name__=='__main__':
-    RecentPages.main()
+    RecentPages.main(sys.argv)

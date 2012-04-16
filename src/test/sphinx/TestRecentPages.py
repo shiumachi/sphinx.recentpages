@@ -25,7 +25,13 @@ class TestRecentPages(unittest.TestCase):
             assert expected[i][0] == res[i].getAbsolutePath()
             assert expected[i][1] == res[i].getMtime()
 
+    def testGenerate(self):
+        expected = ".. _recentPages:\n============\nRecent Pages\n============\n\n* :doc:`test001`: 2012-04-15 20:43:48\n* :doc:`test002`: 2012-04-15 20:43:53\n* :doc:`test003`: 2012-04-15 20:45:37\n* :doc:`dir01/test004`: 2012-04-15 21:36:15\n* :doc:`dir02/dir03/test005`: 2012-04-15 21:36:24\n* :doc:`test006`: 2012-04-15 21:36:30\n"
+        res = RecentPages.generate(self.target_dir)
+        assert expected == res
+
+
     def testMain(self):
-        RecentPages.main()
+        RecentPages.main(['', self.target_dir])
         assert 1 == 1 
 
