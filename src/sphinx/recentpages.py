@@ -61,7 +61,7 @@ Recent Pages
         for f in fileList:
             res.append(File(f))
             
-        res.sort(cmp=lambda x,y: cmp(x.getMtime(), y.getMtime()))
+        res.sort(cmp=lambda x,y: cmp(x.getMtime(), y.getMtime()), reverse=True)
         return res
 
     @classmethod
