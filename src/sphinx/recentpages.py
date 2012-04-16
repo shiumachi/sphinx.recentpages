@@ -27,6 +27,7 @@ class RecentPages(object):
     @classmethod
     def _getHeader(self):
         header = """.. _recentPages:
+
 ============
 Recent Pages
 ============
@@ -71,8 +72,9 @@ Recent Pages
         for w in os.walk(dir):
             rel_path, dir_list, file_list = w
             for f in file_list:
-                if os.path.splitext(f)[1] == ".rst":
-                    res.append(rel_path + "/" + f)
+                if os.path.splitext(f)[1] != ".rst": continue
+                if f == "recentpages.rst": continue
+                res.append(rel_path + "/" + f)
             for d in dir_list:
                 res += self._walk(d)
         return res        

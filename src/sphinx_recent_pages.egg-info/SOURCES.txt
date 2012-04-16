@@ -17,6 +17,7 @@ src/sphinx_recent_pages.egg-info/dependency_links.txt
 src/sphinx_recent_pages.egg-info/top_level.txt
 src/test/__init__.py
 src/test/__init__.pyc
+src/test/data/recentpages.rst
 src/test/data/should_be_excluded.txt
 src/test/data/test001.rst
 src/test/data/test002.rst
