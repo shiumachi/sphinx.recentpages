@@ -1,8 +1,11 @@
+LICENSE
 MANIFEST.in
 README
 README.rst
 setup.cfg
 setup.py
+bin/recentpages
+bin/recentpages_py
 src/sphinx/__init__.py
 src/sphinx/__init__.pyc
 src/sphinx.recentpages.egg-info/PKG-INFO
