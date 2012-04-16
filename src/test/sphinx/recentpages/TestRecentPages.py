@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from sphinx.recentpages import RecentPages
-from test.sphinx.Constants import Constants
+from sphinx.recentpages.recentpages import RecentPages
+from test.sphinx.recentpages.Constants import Constants
 from nose.tools import *
 import unittest
 import sys

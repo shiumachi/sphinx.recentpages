@@ -1,14 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """
-    sphinx.recentpages
-    ~~~~~~~~~~~~~~~~~~
+    sphinx.recentpages.recentpages
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     :copyright: Copyright 2012 by Sho Shimauchi.
     :license: BSD, see LICENSE for details.
 """
 
-from sphinx.util.file import File
+from sphinx.recentpages.util.file import File
 import sys
 import os
 import datetime

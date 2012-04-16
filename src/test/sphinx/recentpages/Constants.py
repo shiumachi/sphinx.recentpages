@@ -4,5 +4,5 @@ import os.path
 
 class Constants(object):
     
-    TEST_ROOT_DIR=os.path.abspath(os.path.dirname(__file__) + "/../data")
+    TEST_ROOT_DIR=os.path.abspath(os.path.dirname(__file__) + "/../../data")
     

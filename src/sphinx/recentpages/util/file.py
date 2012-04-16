@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    sphinx.util.file
-    ~~~~~~~~~~~~~~~~~~
+    sphinx.recentpages.util.file
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     :copyright: Copyright 2012 by Sho Shimauchi.
     :license: BSD, see LICENSE for details.
