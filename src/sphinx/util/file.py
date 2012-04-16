@@ -23,3 +23,6 @@ class File(object):
 
     def getRelativePath(self, start_dir):
         return os.path.relpath(self.absolutePath, start_dir)
+
+    def getRelativePathRoot(self, start_dir):
+        return os.path.splitext(os.path.relpath(self.absolutePath, start_dir))[0]

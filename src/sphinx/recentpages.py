@@ -38,7 +38,7 @@ Recent Pages
     def _getRstFileLists(self, fileList, target_dir):
         res = ""
         for file in fileList:
-            s = "* :doc:`%s`: %s\n" % (file.getRelativePath(target_dir), datetime.datetime.fromtimestamp(file.getMtime()))
+            s = "* :doc:`%s`: %s\n" % (file.getRelativePathRoot(target_dir), datetime.datetime.fromtimestamp(file.getMtime()))
             res += s
 
         return res
