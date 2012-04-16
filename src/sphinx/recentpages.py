@@ -7,12 +7,14 @@
     :license: BSD, see LICENSE for details.
 """
 
+from sphinx.util.file import File
 import os
+
 
 class RecentPages(object):
 
     @classmethod
-    def getSortedFileListWithMtime(self, target_dir):
+    def getFileListOrderedByMtime(self, target_dir):
         """get sorted file lists in specified directory.
 
         Args:
@@ -25,10 +27,10 @@ class RecentPages(object):
         res = []
         
         fileList = self._walk(target_dir)        
-        for file in fileList:
-            res.append((file, int(os.stat(file).st_mtime)))
-                       
-        res.sort(cmp=lambda x,y: cmp(x[1],y[1]))
+        for f in fileList:
+            res.append(File(f))
+            
+        res.sort(cmp=lambda x,y: cmp(x.getMtime(), y.getMtime()))
         return res
 
     @classmethod

@@ -7,6 +7,10 @@ src/sphinx/__init__.py
 src/sphinx/__init__.pyc
 src/sphinx/recentpages.py
 src/sphinx/recentpages.pyc
+src/sphinx/util/__init__.py
+src/sphinx/util/__init__.pyc
+src/sphinx/util/file.py
+src/sphinx/util/file.pyc
 src/sphinx_recent_pages.egg-info/PKG-INFO
 src/sphinx_recent_pages.egg-info/SOURCES.txt
 src/sphinx_recent_pages.egg-info/dependency_links.txt
@@ -25,3 +29,7 @@ src/test/sphinx/TestRecentPages.py
 src/test/sphinx/TestRecentPages.pyc
 src/test/sphinx/__init__.py
 src/test/sphinx/__init__.pyc
+src/test/sphinx/util/TestFile.py
+src/test/sphinx/util/TestFile.pyc
+src/test/sphinx/util/__init__.py
+src/test/sphinx/util/__init__.pyc

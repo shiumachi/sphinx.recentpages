@@ -10,7 +10,7 @@ import os
 class TestRecentPages(unittest.TestCase):
     target_dir = Constants.TEST_ROOT_DIR
 
-    def testGetSortedFileListWithMtime(self):
+    def testGetFileListOrderedByMtime(self):
         expected = [
             (self.target_dir + "/test001", int(os.stat(self.target_dir + "/test001").st_mtime)),
             (self.target_dir + "/test002", int(os.stat(self.target_dir + "/test002").st_mtime)),
@@ -19,7 +19,11 @@ class TestRecentPages(unittest.TestCase):
             (self.target_dir + "/dir02/dir03/test005", int(os.stat(self.target_dir + "/dir02/dir03/test005").st_mtime)),
             (self.target_dir + "/test006", int(os.stat(self.target_dir + "/test006").st_mtime)),
             ]
-        assert expected == RecentPages.getSortedFileListWithMtime(self.target_dir)
+        res = RecentPages.getFileListOrderedByMtime(self.target_dir)
+        l = len(res)
+        for i in xrange(0, l):
+            assert expected[i][0] == res[i].getAbsolutePath()
+            assert expected[i][1] == res[i].getMtime()
 
     def testMain(self):
         RecentPages.main()
