@@ -11,6 +11,7 @@ src/sphinx/__init__.pyc
 src/sphinx.recentpages.egg-info/PKG-INFO
 src/sphinx.recentpages.egg-info/SOURCES.txt
 src/sphinx.recentpages.egg-info/dependency_links.txt
+src/sphinx.recentpages.egg-info/entry_points.txt
 src/sphinx.recentpages.egg-info/namespace_packages.txt
 src/sphinx.recentpages.egg-info/top_level.txt
 src/sphinx/recentpages/__init__.py

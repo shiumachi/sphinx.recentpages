@@ -91,6 +91,8 @@ Recent Pages
             print "ERROR: the argument is not a directory"            
         print self.generate(dir)
 
-
+def main():
+    RecentPages.main(sys.argv)
+            
 if __name__=='__main__':
     RecentPages.main(sys.argv)

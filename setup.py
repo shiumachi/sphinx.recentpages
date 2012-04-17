@@ -10,5 +10,10 @@ setup(name='sphinx.recentpages',
       tests_require='Nose',
       namespace_packages=['sphinx'],
       packages=find_packages('src', exclude=['test']),
-      package_dir= {'' : 'src' }
+      package_dir={'' : 'src' },
+      entry_points={
+        'console_scripts': [
+            "recentpages = sphinx.recentpages.recentpages:main",
+            ],
+        }
       )

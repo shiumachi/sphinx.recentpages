@@ -1,0 +1,3 @@
+[console_scripts]
+recentpages = sphinx.recentpages.recentpages:main
+
