@@ -1,0 +1,5 @@
+.coverage
+build
+dist
+src/*.egg-info
+*.egg-info
