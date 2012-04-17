@@ -3,7 +3,7 @@
 from setuptools import setup, find_packages
 
 setup(name='sphinx.recentpages',
-      version='0.1',
+      version='0.2',
       author='Sho Shimauchi',
       author_email='sho.shimauchi@gmail.com',
       test_suite='nose.collector',
