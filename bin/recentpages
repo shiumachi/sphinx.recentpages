@@ -1,9 +1,0 @@
-#!/bin/bash
-
-SCRIPT_DIR=`dirname $0`
-ROOT_DIR=${SCRIPT_DIR}/..
-SRC_DIR=${ROOT_DIR}/src
-PYTHONPATH=${SRC_DIR}:$PYTHONPATH
-RECENT_PAGES=${SRC_DIR}/sphinx/recentpages.py
-
-${RECENT_PAGES} $@

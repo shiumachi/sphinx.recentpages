@@ -1,4 +1,0 @@
-#!/usr/bin/python
-from sphinx.recentpages.recentpages import RecentPages
-import sys
-RecentPages.main(sys.argv)
