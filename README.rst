@@ -1,8 +1,8 @@
 ==================================================
-sphinx.recentpages:  Sphinx Recent Pages Generator
+sphinx.recentpages:  Sphinx Recent Pages Extension
 ==================================================
 
-This script generates 'Recent Pages' rst page for Sphinx sources.
+This sphinx extension provides a new directive which displays recent updated files list.
 
 .. contents::
    :depth: 2
@@ -11,60 +11,48 @@ This script generates 'Recent Pages' rst page for Sphinx sources.
 Introduction
 ============
 
-This script generates 'Recent Pages' rst page for Sphinx sources.
-For example, if you modified file1.rst, file2.rst, and file3.rst in this order and then run this script, you'll get 'Recent Pages' file like this:
+This sphinx extension provides a new directive which displays recent updated files list.
+If you want to get all page list ordered by mtime, just put recentpages directive as follows:
 
 ::
 
-  .. _recentPages:
+  .. recentpages:
 
-  ============
-  Recent Pages
-  ============
 
-  * :doc:`file3`: 2012-04-15 21:36:30
-  * :doc:`file2`: 2012-04-15 21:36:24
-  * :doc:`file1`: 2012-04-15 21:36:15
+If you want to display recent 3 files only, add num option to the directive:
+  
+::
 
+  .. recentpages:
+      :num: 3
+
+  
 
 Install
 =======
 
-You can choose the following two way to install sphinx.recentpages.
+Put recentpages.py to your sphinx project and add 'recentpages' to extension list.
+For example, if you put the file into source/_exts directory, add the following two lines into source/conf.py.
 
 ::
 
-  $ pip install sphinx.recentpages-0.1.tar.gz
+  sys.path.append(os.path.abspath('_exts'))
+  extensions = ['recentpages']
+
+
+Please note that recent updated pages list is not updated if you run 'make html' to build pages and you don't update the page which has the directive.
+To update the list everytime, please use 'recentpageshtml' instead of 'html'.
 
 ::
 
-  $ easy_install sphinx.recentpages
+  $ /usr/local/bin/sphinx-build -b recentpageshtml -d build/doctrees source build/recentpageshtml
 
-
-
-Usage
-=====
+If you want to run 'make recentpageshtml', please add the following lines to Makefile:
   
-It's pretty easy to use this script.
-Please just run ::
+::
 
-  $ recentpages [sphinx source directory] > recentpages.rst
-
-
-Tips
-====
-
-How to update 'Recent Pages' page automatically?
-------------------------------------------------
-
-Put templates/OMakefile into the root directory of your sphinx project and then run the following command in background: ::
-
-  $ omake -P --verbose  
-
-How to put link to 'Recent Pages' on the top bar of generated html document?
-----------------------------------------------------------------------------
-
-Put templates/layout.html into source/_templates directory.
-  
-
+  recentpageshtml:
+         $(SPHINXBUILD) -b recentpageshtml $(ALLSPHINXOPTS) $(BUILDDIR)/recentpageshtml
+         @echo
+         @echo "Build finished. The HTML page is in $(BUILDDIR)/recentpageshtml."
 
