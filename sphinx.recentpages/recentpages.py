@@ -80,9 +80,9 @@ def get_file_list_ordered_by_mtime(target_dir, env):
     
     res = []
     
-    fileList = walk2(env)        
-    for abspath in fileList:
-        mtime = os.stat(abspath).st_mtime
+    for docname in env.found_docs:
+        abspath = env.doc2path(docname)
+        mtime = os.path.getmtime(abspath)
         res.append((abspath,mtime))
 
     res = list(set(res))
@@ -93,13 +93,6 @@ def get_file_list_ordered_by_mtime(target_dir, env):
     
     return res
 
-def walk2(env):
-    res = []
-    for docname in env.found_docs:
-        res.append(env.doc2path(docname))
-
-    return res
-    
 class RecentpagesHTMLBuilder(StandaloneHTMLBuilder):
     """
     """
