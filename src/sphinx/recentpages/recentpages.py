@@ -1,98 +1,104 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
-"""
-    sphinx.recentpages.recentpages
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :copyright: Copyright 2012 by Sho Shimauchi.
-    :license: BSD, see LICENSE for details.
-"""
+from sphinx.util.compat import Directive
+from docutils import nodes
+import sys, os, datetime, stat
 
-from sphinx.recentpages.util.file import File
-import sys
-import os
-import datetime
-import stat
+def setup(app):
+    app.add_node(recentpages)
 
-class RecentPages(object):
+    app.add_directive('recentpages', RecentpagesDirective)
+    app.connect('doctree-resolved', process_recentpages_nodes)
+    app.connect('env-purge-doc', purge_recentpages)
 
-    @classmethod
-    def generate(self, target_dir):
-        rst = ""
-        rst += self._getHeader()
-        fileList = self.getFileListOrderedByMtime(target_dir)
-        rst += self._getRstFileLists(fileList, target_dir)
-        return rst
+class recentpages(nodes.General, nodes.Element):
+    pass
 
-    @classmethod
-    def _getHeader(self):
-        header = """.. _recentPages:
+class RecentpagesDirective(Directive):
+    has_content = True
+    option_spec = {
+        'num': int
+        }
 
-============
-Recent Pages
-============
+    def run(self):
+        num = self.options.get('num', -1)
+        res = recentpages('')
+        res['num'] = num
+        return [res]
 
-"""
-        return header
+def process_recentpages_nodes(app, doctree, fromdocname):
+    env = app.builder.env
+    
+    para = nodes.paragraph()
+    out_list = generate_file_list('source')
 
-    @classmethod
-    def _getRstFileLists(self, fileList, target_dir):
-        res = ""
-        for file in fileList:
-            s = "* :doc:`%s`: %s\n" % (file.getRelativePathRoot(target_dir), datetime.datetime.fromtimestamp(file.getMtime()))
-            res += s
+    for node in doctree.traverse(recentpages):
+        num = node['num']
+        content = generate_content(out_list, num)
+        node.replace_self(content)
 
-        return res
+def generate_file_list(target_dir):
+    res = []    
+    file_list = get_file_list_ordered_by_mtime(target_dir)    
+
+    for path_and_mtime in file_list:
+        res.append("%s: %s" % path_and_mtime)
+    
+    return res
+
+def generate_content(out_list, num=-1):
+    content = []
+    n = len(out_list) if num < 0 else num
+
+    for line in out_list:
+        content.append(nodes.Text(line, line))
+        content.append(nodes.paragraph())
+        n -= 1
+        if n <= 0: break        
+
+    return content
             
+def get_file_list_ordered_by_mtime(target_dir):
+    """get sorted file lists in specified directory.
 
-    @classmethod
-    def getFileListOrderedByMtime(self, target_dir):
-        """get sorted file lists in specified directory.
+    Args:
+    target_dir: target directory to get all file lists.
 
-        Args:
-        target_dir: target directory to get all file lists.
+    Returns:
+    list of files ordered by mtime.
+    """
+    
+    res = []
+    
+    fileList = walk(target_dir)        
+    for abspath in fileList:
+        mtime = os.stat(abspath).st_mtime
+        res.append((abspath,mtime))
 
-        Returns:
-        list of files ordered by mtime.
-        """
-        
-        res = []
-        
-        fileList = self._walk(target_dir)        
-        for f in fileList:
-            res.append(File(f))
-            
-        res.sort(cmp=lambda x,y: cmp(x.getMtime(), y.getMtime()), reverse=True)
-        return res
+    res = list(set(res))
+    res.sort(cmp=lambda x,y: cmp(x[1], y[1]), reverse=True)
 
-    @classmethod
-    def _walk(self, dir):
-        res = []
-        if dir == "": return res
-        for w in os.walk(dir):
-            rel_path, dir_list, file_list = w
-            for f in file_list:
-                if os.path.splitext(f)[1] != ".rst": continue
-                if f == "recentpages.rst": continue
-                res.append(rel_path + "/" + f)
-            for d in dir_list:
-                res += self._walk(d)
-        return res        
-            
-    @classmethod
-    def main(self,argv=None):        
-        """main method
-        """
-        if argv is None:
-            print "ERROR: directory must be specified"
-        dir = argv[1]
-        mode = os.stat(dir).st_mode
-        if not stat.S_ISDIR(mode):
-            print "ERROR: the argument is not a directory"            
-        print self.generate(dir)
+    # convert to readable date format
+    res = map(lambda x: (x[0], datetime.datetime.fromtimestamp(x[1])), res)
+    
+    return res
+    
+def walk(dir):
+    res = []
+    if dir == "": return res
+    for w in os.walk(dir):
+        rel_path, dir_list, file_list = w
+        for f in file_list:
+            if os.path.splitext(f)[1] != ".rst": continue
+            res.append(os.path.normpath(rel_path + "/" + f))
+        for d in dir_list:
+            res += walk(d)
+    return res        
 
-def main():
-    RecentPages.main(sys.argv)
-            
-if __name__=='__main__':
-    RecentPages.main(sys.argv)
+def purge_recentpages(app, env, docname):
+    if not hasattr(env, 'recentpages_nodes'):
+        return
+    env.recentpages_nodes = [recentpages for recentpages in env.recentpages_nodes
+                          if recentpages['docname'] != docname]
+    pass
+
