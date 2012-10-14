@@ -83,7 +83,7 @@ def get_file_list_ordered_by_mtime(target_dir, env):
     for docname in env.found_docs:
         abspath = env.doc2path(docname)
         mtime = os.path.getmtime(abspath)
-        res.append((abspath,mtime))
+        res.append((docname,mtime))
 
     res = list(set(res))
     res.sort(cmp=lambda x,y: cmp(x[1], y[1]), reverse=True)
