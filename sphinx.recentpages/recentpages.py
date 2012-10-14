@@ -3,23 +3,21 @@
 from sphinx.util.compat import Directive
 from sphinx.builders.html import StandaloneHTMLBuilder
 from docutils import nodes
-import sys, os, datetime, stat, re
+
 from os import path
+import sys, os, datetime, stat, re
+
 try:
     from hashlib import md5
 except ImportError:
     # 2.4 compatibility
     from md5 import md5
 
-
 def setup(app):
     app.add_node(recentpages)
 
     app.add_directive('recentpages', RecentpagesDirective)
     app.connect('doctree-resolved', process_recentpages_nodes)
-    app.connect('env-purge-doc', purge_recentpages)
-    app.connect('source-read', collect_recentpages_directive_page)
-    app.connect('doctree-read', process_recentpages)
 
     app.add_builder(RecentpagesHTMLBuilder)
 
@@ -37,34 +35,12 @@ class RecentpagesDirective(Directive):
         res = recentpages('')
         res['num'] = num
         return [res]
-
-recentpages_directive_pattern = re.compile('.. recentpages::')
-    
-def collect_recentpages_directive_page(app, docname, source):
-    for content in source:
-        if recentpages_directive_pattern.match(content):
-            app.builder.env.recentpages_directive_pages_list.append(docname)
-            break
-
-def process_recentpages(app, doctree):
-    env = app.builder.env
-    if not hasattr(env, 'recentpages_directive_pages_list'):
-        env.recentpages_directive_pages_list = []
-
-    for node in doctree.traverse(recentpages):
-        env.recentpages_directive_pages_list.append({
-                'docname': env.docname,
-                'source': node.source or env.doc2path(env.docname),
-        })
-
     
 def process_recentpages_nodes(app, doctree, docname):
     env = app.builder.env
     
     para = nodes.paragraph()
     out_list = generate_file_list('source')
-
-#    print(env.recentpages_directive_pages_list)
 
     for node in doctree.traverse(recentpages):
         num = node['num']
@@ -128,11 +104,6 @@ def walk(dir):
         for d in dir_list:
             res += walk(d)
     return res        
-
-def purge_recentpages(app, env, docname):
-    if not hasattr(env, 'recentpages_nodes'):
-        return
-    env.recentpages_nodes = None
 
 class RecentpagesHTMLBuilder(StandaloneHTMLBuilder):
     """
@@ -203,8 +174,7 @@ class RecentpagesHTMLBuilder(StandaloneHTMLBuilder):
         path = self.env.doc2path(docname)
         file = open(path)
         for line in file:
-            if recentpages_directive_pattern.match(line):
-                print("file %s is matched. matched line: %s" % (docname, line))
+            if self.recentpages_directive_pattern.match(line):
                 return True
 
         return False
