@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
+"""
+    sphinx.recentpages
+    ~~~~~~~~~~~~~~~~~~
+
+    Build recent update pages list.
+
+    :copyright: Copyright 2012 by Sho Shimauchi.
+    :license: BSD, see LICENSE for details.
+"""
 
 from sphinx.util.compat import Directive
 from sphinx.builders.html import StandaloneHTMLBuilder
@@ -22,9 +31,15 @@ def setup(app):
     app.add_builder(RecentpagesHTMLBuilder)
 
 class recentpages(nodes.General, nodes.Element):
+    """Node for recentpages extention.
+    """
     pass
 
 class RecentpagesDirective(Directive):
+    """
+    Directive to display recent update pages list.
+    """
+
     has_content = True
     option_spec = {
         'num': int
@@ -59,18 +74,8 @@ def generate_content(file_list, num=-1):
         if n <= 0: break        
 
     return content
-            
-            
+                        
 def get_file_list_ordered_by_mtime(env):
-    """get sorted file lists in specified directory.
-
-    Args:
-    env: app.env
-
-    Returns:
-    list of files ordered by mtime.
-    """
-    
     res = []
     
     for docname in env.found_docs:
@@ -88,6 +93,11 @@ def get_file_list_ordered_by_mtime(env):
 
 class RecentpagesHTMLBuilder(StandaloneHTMLBuilder):
     """
+    HTMLBuilder for recentpages extension.
+    This is almost same to StandaloneHTMLBuilder.
+    All pages which contains recentpages directive are always marked as outdated.
+    This is required because recent pages list always should be updated even if
+    the page is not updated.
     """
     name = 'recentpageshtml'
 
@@ -143,6 +153,7 @@ class RecentpagesHTMLBuilder(StandaloneHTMLBuilder):
             try:
                 srcmtime = max(path.getmtime(self.env.doc2path(docname)),
                                template_mtime)
+                # this is the only part which is different from StandaloneHTMLBuilder.
                 if srcmtime > targetmtime or self.has_recentpages(docname):
                     yield docname
             except EnvironmentError:
