@@ -40,16 +40,16 @@ def process_recentpages_nodes(app, doctree, docname):
     env = app.builder.env
     
     para = nodes.paragraph()
-    out_list = generate_file_list('source')
+    out_list = generate_file_list('source', env)
 
     for node in doctree.traverse(recentpages):
         num = node['num']
         content = generate_content(out_list, num)
         node.replace_self(content)
 
-def generate_file_list(target_dir):
+def generate_file_list(target_dir, env):
     res = []    
-    file_list = get_file_list_ordered_by_mtime(target_dir)    
+    file_list = get_file_list_ordered_by_mtime(target_dir, env)    
 
     for path_and_mtime in file_list:
         res.append("%s: %s" % path_and_mtime)
@@ -68,7 +68,7 @@ def generate_content(out_list, num=-1):
 
     return content
             
-def get_file_list_ordered_by_mtime(target_dir):
+def get_file_list_ordered_by_mtime(target_dir, env):
     """get sorted file lists in specified directory.
 
     Args:
@@ -80,7 +80,7 @@ def get_file_list_ordered_by_mtime(target_dir):
     
     res = []
     
-    fileList = walk(target_dir)        
+    fileList = walk2(env)        
     for abspath in fileList:
         mtime = os.stat(abspath).st_mtime
         res.append((abspath,mtime))
@@ -92,19 +92,14 @@ def get_file_list_ordered_by_mtime(target_dir):
     res = map(lambda x: (x[0], datetime.datetime.fromtimestamp(x[1])), res)
     
     return res
-    
-def walk(dir):
-    res = []
-    if dir == "": return res
-    for w in os.walk(dir):
-        rel_path, dir_list, file_list = w
-        for f in file_list:
-            if os.path.splitext(f)[1] != ".rst": continue
-            res.append(os.path.normpath(rel_path + "/" + f))
-        for d in dir_list:
-            res += walk(d)
-    return res        
 
+def walk2(env):
+    res = []
+    for docname in env.found_docs:
+        res.append(env.doc2path(docname))
+
+    return res
+    
 class RecentpagesHTMLBuilder(StandaloneHTMLBuilder):
     """
     """
