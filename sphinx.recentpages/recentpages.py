@@ -40,16 +40,16 @@ def process_recentpages_nodes(app, doctree, docname):
     env = app.builder.env
     
     para = nodes.paragraph()
-    out_list = generate_file_list('source', env)
+    out_list = generate_file_list(env)
 
     for node in doctree.traverse(recentpages):
         num = node['num']
         content = generate_content(out_list, num)
         node.replace_self(content)
 
-def generate_file_list(target_dir, env):
+def generate_file_list(env):
     res = []    
-    file_list = get_file_list_ordered_by_mtime(target_dir, env)    
+    file_list = get_file_list_ordered_by_mtime(env)    
 
     for path_and_mtime in file_list:
         res.append("%s: %s" % path_and_mtime)
@@ -68,11 +68,11 @@ def generate_content(out_list, num=-1):
 
     return content
             
-def get_file_list_ordered_by_mtime(target_dir, env):
+def get_file_list_ordered_by_mtime(env):
     """get sorted file lists in specified directory.
 
     Args:
-    target_dir: target directory to get all file lists.
+    env: app.env
 
     Returns:
     list of files ordered by mtime.
