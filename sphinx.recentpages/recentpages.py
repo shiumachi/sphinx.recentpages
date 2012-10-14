@@ -44,10 +44,10 @@ def process_recentpages_nodes(app, doctree, docname):
 
     for node in doctree.traverse(recentpages):
         num = node['num']
-        content = generate_content2(file_list, num)
+        content = generate_content(file_list, num)
         node.replace_self(content)
 
-def generate_content2(file_list, num=-1):
+def generate_content(file_list, num=-1):
     content = []
     n = len(file_list) if num < 0 else num
 
