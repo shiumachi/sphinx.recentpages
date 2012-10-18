@@ -14,13 +14,16 @@ from sphinx.builders.html import StandaloneHTMLBuilder
 from docutils import nodes
 
 from os import path
-import sys, os, datetime, stat, re
+import os
+import datetime
+import re
 
 try:
     from hashlib import md5
 except ImportError:
     # 2.4 compatibility
     from md5 import md5
+
 
 def setup(app):
     app.add_node(recentpages)
@@ -30,10 +33,12 @@ def setup(app):
 
     app.add_builder(RecentpagesHTMLBuilder)
 
+
 class recentpages(nodes.General, nodes.Element):
     """Node for recentpages extention.
     """
     pass
+
 
 class RecentpagesDirective(Directive):
     """
@@ -43,24 +48,26 @@ class RecentpagesDirective(Directive):
     has_content = True
     option_spec = {
         'num': int
-        }
+    }
 
     def run(self):
         num = self.options.get('num', -1)
         res = recentpages('')
         res['num'] = num
         return [res]
-    
+
+
 def process_recentpages_nodes(app, doctree, docname):
     env = app.builder.env
-    
+
     para = nodes.paragraph()
-    file_list = get_file_list_ordered_by_mtime(env)    
+    file_list = get_file_list_ordered_by_mtime(env)
 
     for node in doctree.traverse(recentpages):
         num = node['num']
         content = generate_content(file_list, num)
         node.replace_self(content)
+
 
 def generate_content(file_list, num=-1):
     content = []
@@ -71,33 +78,37 @@ def generate_content(file_list, num=-1):
         content.append(nodes.Text(line, line))
         content.append(nodes.paragraph())
         n -= 1
-        if n <= 0: break        
+        if n <= 0:
+            break
 
     return content
-                        
+
+
 def get_file_list_ordered_by_mtime(env):
     res = []
-    
+
     for docname in env.found_docs:
         abspath = env.doc2path(docname)
         mtime = os.path.getmtime(abspath)
-        res.append((docname,mtime))
+        res.append((docname, mtime))
 
     res = list(set(res))
-    res.sort(cmp=lambda x,y: cmp(x[1], y[1]), reverse=True)
+    res.sort(cmp=lambda x, y: cmp(x[1], y[1]), reverse=True)
 
     # convert to readable date format
     res = map(lambda x: (x[0], datetime.datetime.fromtimestamp(x[1])), res)
-    
+
     return res
+
 
 class RecentpagesHTMLBuilder(StandaloneHTMLBuilder):
     """
     HTMLBuilder for recentpages extension.
     This is almost same to StandaloneHTMLBuilder.
-    All pages which contains recentpages directive are always marked as outdated.
-    This is required because recent pages list always should be updated even if
-    the page is not updated.
+    All pages which contains recentpages directive
+    are always marked as outdated.
+    This is required because recent pages list always
+    should be updated even if the page is not updated.
     """
     name = 'recentpageshtml'
 
@@ -106,8 +117,8 @@ class RecentpagesHTMLBuilder(StandaloneHTMLBuilder):
                        for (name, desc) in self.config.values.iteritems()
                        if desc[1] == 'recentpageshtml')
         self.config_hash = md5(unicode(cfgdict).encode('utf-8')).hexdigest()
-        self.tags_hash = md5(unicode(sorted(self.tags)).encode('utf-8')) \
-                .hexdigest()
+        self.tags_hash = md5(unicode(
+            sorted(self.tags)).encode('utf-8')).hexdigest()
         old_config_hash = old_tags_hash = ''
         try:
             fp = open(path.join(self.outdir, '.buildinfo'))
@@ -129,10 +140,9 @@ class RecentpagesHTMLBuilder(StandaloneHTMLBuilder):
                       path.join(self.outdir, '.buildinfo'))
         except Exception as e:
             self.warn('Exception was thrown: %s', (e,))
-            pass
 
-        if old_config_hash != self.config_hash or \
-               old_tags_hash != self.tags_hash:
+        if (old_config_hash != self.config_hash
+                or old_tags_hash != self.tags_hash):
             for docname in self.env.found_docs:
                 yield docname
             return
@@ -153,23 +163,21 @@ class RecentpagesHTMLBuilder(StandaloneHTMLBuilder):
             try:
                 srcmtime = max(path.getmtime(self.env.doc2path(docname)),
                                template_mtime)
-                # this is the only part which is different from StandaloneHTMLBuilder.
+                # this is the only part which is different
+                # from StandaloneHTMLBuilder.
                 if srcmtime > targetmtime or self.has_recentpages(docname):
                     yield docname
             except EnvironmentError:
                 # source doesn't exist anymore
                 pass
 
-    recentpages_directive_pattern = re.compile('\.\. recentpages::')
-            
+    recentpages_directive_pattern = re.compile(r'\.\. recentpages::')
+
     def has_recentpages(self, docname):
-        path = self.env.doc2path(docname)
-        file = open(path)
-        for line in file:
-            if self.recentpages_directive_pattern.match(line):
-                return True
+        docpath = self.env.doc2path(docname)
+        with open(docpath) as files:
+            for line in files:
+                if self.recentpages_directive_pattern.match(line):
+                    return True
 
         return False
-            
-
-        
