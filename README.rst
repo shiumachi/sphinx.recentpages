@@ -16,14 +16,14 @@ If you want to get all page list ordered by mtime, just put recentpages directiv
 
 ::
 
-  .. recentpages:
+  .. recentpages::
 
 
 If you want to display recent 3 files only, add num option to the directive:
   
 ::
 
-  .. recentpages:
+  .. recentpages::
       :num: 3
 
   
@@ -37,7 +37,7 @@ For example, if you put the file into source/_exts directory, add the following 
 ::
 
   sys.path.append(os.path.abspath('_exts'))
-  extensions = ['recentpages']
+  extensions += ['recentpages']
 
 
 Please note that recent updated pages list is not updated if you run 'make html' to build pages and you don't update the page which has the directive.
