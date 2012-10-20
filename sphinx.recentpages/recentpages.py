@@ -28,14 +28,23 @@ except ImportError:
 def visit_html_recentpages(self, node):
     env = self.builder.env
     file_list = get_file_list_ordered_by_mtime(env)
+
+    num = node['num']
+    n = len(file_list) if num < 0 else num
+
     for docname, mtime in file_list:
         self.body.append('<a href="%s.html">' % docname)
         self.body.append('%s' % (docname,))
         self.body.append('</a>: %s<br />' % (mtime,))
+        n -= 1
+        if n <= 0:
+            break
     raise nodes.SkipNode
+
 
 def depart_recentpages(self, node):
     pass
+
 
 def setup(app):
     app.add_node(recentpages,
