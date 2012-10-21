@@ -73,6 +73,9 @@ class RecentpagesDirective(Directive):
     }
 
     def run(self):
+        env = self.state.document.settings.env
+        env.note_reread()
+
         num = self.options.get('num', -1)
         res = recentpages('')
         res['num'] = num
