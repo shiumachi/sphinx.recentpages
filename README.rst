@@ -40,19 +40,3 @@ For example, if you put the file into source/_exts directory, add the following 
   extensions += ['recentpages']
 
 
-Please note that recent updated pages list is not updated if you run 'make html' to build pages and you don't update the page which has the directive.
-To update the list everytime, please use 'recentpageshtml' instead of 'html'.
-
-::
-
-  $ /usr/local/bin/sphinx-build -b recentpageshtml -d build/doctrees source build/recentpageshtml
-
-If you want to run 'make recentpageshtml', please add the following lines to Makefile:
-  
-::
-
-  recentpageshtml:
-         $(SPHINXBUILD) -b recentpageshtml $(ALLSPHINXOPTS) $(BUILDDIR)/recentpageshtml
-         @echo
-         @echo "Build finished. The HTML page is in $(BUILDDIR)/recentpageshtml."
-
