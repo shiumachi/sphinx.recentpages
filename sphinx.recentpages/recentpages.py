@@ -32,9 +32,9 @@ def visit_html_recentpages(self, node):
     num = node['num']
     n = len(file_list) if num < 0 else num
 
-    for docname, mtime in file_list:
+    for docname, mtime, title in file_list:
         self.body.append('<a href="%s.html">' % docname)
-        self.body.append('%s' % (docname,))
+        self.body.append('%s' % (title,))
         self.body.append('</a>: %s<br />' % (mtime,))
         n -= 1
         if n <= 0:
@@ -109,19 +109,29 @@ def generate_content(file_list, num=-1):
     return content
 
 
+explicit_title_re = re.compile(r'^<(.*?)>(.+?)\s*(?<!\x00)<(.*?)>$', re.DOTALL)
+
+
 def get_file_list_ordered_by_mtime(env):
     res = []
 
     for docname in env.found_docs:
         abspath = env.doc2path(docname)
         mtime = os.path.getmtime(abspath)
-        res.append((docname, mtime))
+        title = env.titles[docname]
+        m = explicit_title_re.match(unicode(title))
+        if m:
+            title = m.group(2)
+        else:
+            title = None
+        res.append((docname, mtime, title))
 
     res = list(set(res))
     res.sort(cmp=lambda x, y: cmp(x[1], y[1]), reverse=True)
 
     # convert to readable date format
-    res = map(lambda x: (x[0], datetime.datetime.fromtimestamp(x[1])), res)
+    res = map(lambda x: (x[0], datetime.datetime.fromtimestamp(x[1]), x[2]),
+              res)
 
     return res
 
