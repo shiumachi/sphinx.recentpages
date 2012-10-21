@@ -1,6 +1,6 @@
-==================================================
-sphinx.recentpages:  Sphinx Recent Pages Extension
-==================================================
+=========================================================
+sphinxcontrib-recentpages:  Sphinx Recent Pages Extension
+=========================================================
 
 This sphinx extension provides a new directive which displays recent updated files list.
 
