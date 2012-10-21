@@ -8,6 +8,6 @@ setup(name='sphinx.recentpages',
       author_email='sho.shimauchi@gmail.com',
       test_suite='nose.collector',
       tests_require='Nose',
-      packages=find_packages('sphinx.recentpages'),
-      package_dir={'' : 'sphinx.recentpages' },
+      packages=find_packages('sphinxcontrib'),
+      package_dir={'' : 'sphinxcontrib-recentpages' },
       )

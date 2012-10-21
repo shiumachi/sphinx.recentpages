@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    sphinx.recentpages
-    ~~~~~~~~~~~~~~~~~~
+    sphinxcontrib.recentpages
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Build recent update pages list.
 
